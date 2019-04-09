@@ -14,7 +14,7 @@
 <body>
 <div class="row"> 
     <div id="leftbar" class="leftbar col-sm-4">         
-        <input id="geolocation-checkbox" type="checkbox" name="geolocate">Geolocate</input>
+        <input id="geolocation-checkbox" type="checkbox" name="geolocate">Geolocate me</input>
         <div class="lat-lon-search">
         <b>Latitude:</b> <input type="text" id="lat-search"></input> 
         <b>Longitude:</b> <input type="text" id="lon-search"></input>
@@ -205,10 +205,11 @@ var geocoder = new Geocoder('nominatim', {
     limit: 5,
     keepOpen: false
 });
-geocoder.on('addresschosen', function(evt){
-    window.setTimeout(function(){
-        popup.show(evt.coordinate, evt.address.formatted);
-    }, 3000);
+geocoder.on('addresschosen', function(evt){ 
+    var coord = evt.coordinate;
+    var x = parseFloat(coord[0]);
+    var y = parseFloat(coord[1]);
+    searchedFeature.setGeometry(new ol.geom.Point([x,y]));
 });
 map.addControl(geocoder);
 map.addOverlay(popup);
@@ -239,9 +240,8 @@ function searchCoord(latitude,longitude){
 }
 $("#coord-search").click(function(){
     var latitude = parseFloat(document.getElementById("lat-search").value);
-    var longitude = parseFloat(document.getElementById("lon-search").value); 
+    var longitude = parseFloat(document.getElementById("lon-search").value);  
 
-    alert(longitude + latitude);
     searchCoord(longitude, latitude);
 });
 
