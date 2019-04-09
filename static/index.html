@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wildfire Map</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width", initial-scale="1.0">
+  <link rel="stylesheet" href="index.css">
+  <!-- Openlayers Stylesheet -->
+  <link rel="stylesheet" href="https://unpkg.com/openlayers/dist/ol.css"> 
+  <link rel="stylesheet" href="../ol-geocoder.min.css">
+  <!-- Bootstrap Stylesheet -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+<div class="row"> 
+    <div id="leftbar" class="leftbar col-sm-4">         
+        <input id="geolocation-checkbox" type="checkbox" name="geolocate">Geolocate</input>
+        <div class="lat-lon-search">
+        <b>Latitude:</b> <input type="text" id="lat-search"></input> 
+        <b>Longitude:</b> <input type="text" id="lon-search"></input>
+        <button id="coord-search" type="button">Find</button>
+    </div>
+    <div class="col-sm-4">
+        <div id="map" class="map">
+            <div id="popup"></div>
+        </div>
+            <button id="leftbar-toggle">E</button>
+            <button id="rightbar-toggle">E</button> 
+    </div>
+    <div class="rightbar col-sm-4">
+            
+    </div>
+</div>
+    <!-- Linked scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+                crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+                crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/openlayers@4.4.2"></script>
+    <!-- Local scripts -->
+    <script src="../ol-geocoder.js"></script>
+    <!-- JQuery events and methods -->
+<script>
+$(document).ready(function(){
+    $("#leftbar-toggle").click(function() {
+        $(".leftbar").toggle(350);
+    });
+    $("#rightbar-toggle").click(function() {
+        $(".rightbar").toggle(350);
+    });
+});
+</script>
+ <!-- Openlayers script -->
+<script>
+// Geolocation view
+var myView = new ol.View({
+    center: [0, 0],
+    zoom: 2
+});
+// Map setup
+var map = new ol.Map({
+    target: 'map',
+    layers: [
+        // Base layer display
+        new ol.layer.Tile({
+            source: new ol.source.OSM()
+        })
+    ],
+    view: myView
+});
+
+// Geolocation
+// Is the devices geolocation being tracked?
+var isGeolocating = false; 
+function MyLocation(){
+    // Geolocation variable class
+    this.accuracy = null;
+    this.altitude = null;
+    this.altitudeAccuracy = null;
+    this.heading = null;
+    this.speed = null;
+};
+var geolocation = new ol.Geolocation({
+// enableHighAccuracy must be set to true to have the heading value.
+	trackingOptions: {
+		enableHighAccuracy: true
+	},
+	projection: myView.getProjection()
+});
+
+// Handle a geolocation error
+geolocation.on('error', function(error) {
+    var info = document.getElementById('info');
+    info.innerHTML = error.message;
+    info.style.display = '';
+});
+
+// Listen for changes to the checkbox
+$("#geolocation-checkbox").change(function(){
+	isGeolocating = $("#geolocation-checkbox").is(":checked");
+	geolocation.setTracking(isGeolocating);
+});
+// Listen for changes to the geolocation
+geolocation.on('change:position', function() {
+	var coordinates = geolocation.getPosition();
+    positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
+});
+
+// Geolocation features
+var accuracyFeature = new ol.Feature();
+geolocation.on('change:accuracyGeometry', function() {
+	accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+});
+
+var positionFeature = new ol.Feature({
+    name: "My current location",
+	// geometry is set to the devices current position
+		
+});
+devPosStyle = new ol.style.Style({
+		image: new ol.style.Circle({
+          radius: 6,
+          fill: new ol.style.Fill({
+            color: '#3399CC'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 2
+          })
+	})
+});
+positionFeature.setStyle(devPosStyle);
+
+var selectFeature = new ol.style.Style({
+	stroke: new ol.style.Stroke({
+            color: '#ff0000',
+            width: 2
+    })
+	// TODO add pin icon
+});
+
+// Add geolocation features to the map
+var geolocFeature = new ol.layer.Vector({
+	id: 'geolocation',
+	map: map,
+	source: new ol.source.Vector({
+          features: [accuracyFeature, positionFeature]
+	})
+});
+
+// Fire location features
+/* NOTE: This is dummy data for the sake of testing.
+// This data is not accurate or relevant to the real world
+*/
+
+var dummyFire1 = new ol.Feature({
+	geometry: new ol.geom.Point([0,0])
+});
+
+var dummyFire2 = new ol.Feature({
+	geometry: new ol.geom.Point([0,0])
+});
+
+var dummyFire3 = new ol.Feature({
+	geometry: new ol.geom.Point([0,0])
+});
+
+// END dummy data 
+
+
+// display popup 
+var mapPopup = document.getElementById('popup');
+var popup = new ol.Overlay({
+        element: mapPopup,
+        positioning: 'bottom-center',
+        stopEvent: false,
+        offset: [0, -50]
+});
+map.addOverlay(popup);
+
+
+var selectInteraction = new ol.interaction.Select({
+        layers: function (layer) {
+          return layer.get('id') == 'geolocation';
+        },
+        style: [selectFeature]
+});
+map.getInteractions().extend([selectInteraction]);
+// TODO add popup for this interaction
+
+// Geocoder searching
+var geocoder = new Geocoder('nominatim', {
+    provider: 'photon',
+    targetType: 'glass-button',
+    lang: 'en',
+    placeholder: 'Search by location',
+    limit: 5,
+    keepOpen: false
+});
+geocoder.on('addresschosen', function(evt){
+    window.setTimeout(function(){
+        popup.show(evt.coordinate, evt.address.formatted);
+    }, 3000);
+});
+map.addControl(geocoder);
+map.addOverlay(popup);
+
+// Searched location
+var searchedFeature = new ol.Feature();
+searchedFeature.setStyle(new ol.style.Style({
+    image: new ol.style.Circle({
+          radius: 6,
+          fill: new ol.style.Fill({
+            color: '#3399CC'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 2
+        })
+	})
+}));
+new ol.layer.Vector({
+    map: map,
+    source: new ol.source.Vector({
+        features: [searchedFeature]
+    })
+});
+function searchCoord(latitude,longitude){
+    var p = ol.proj.transform([latitude,longitude], 'EPSG:4326', 'EPSG:3857');
+    searchedFeature.setGeometry(new ol.geom.Point(p));
+}
+$("#coord-search").click(function(){
+    var latitude = parseFloat(document.getElementById("lat-search").value);
+    var longitude = parseFloat(document.getElementById("lon-search").value); 
+
+    alert(longitude + latitude);
+    searchCoord(longitude, latitude);
+});
+
+</script>
+</body>
+</html>
