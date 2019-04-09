@@ -162,15 +162,43 @@ var geolocFeature = new ol.layer.Vector({
 */
 
 var dummyFire1 = new ol.Feature({
-	geometry: new ol.geom.Point([0,0])
+	geometry: new ol.geom.Point(lonLatToCoord( -113.5877542, 47.5303717))
 });
 
 var dummyFire2 = new ol.Feature({
-	geometry: new ol.geom.Point([0,0])
+	geometry: new ol.geom.Point(lonLatToCoord(-114.4462061, 47.1568185))
 });
 
 var dummyFire3 = new ol.Feature({
-	geometry: new ol.geom.Point([0,0])
+	geometry: new ol.geom.Point(lonLatToCoord(-113.664856 ,47.001118))
+});
+
+
+var fireIcon = new ol.style.Style({
+		image: new ol.style.Circle({
+          radius: 6,
+          fill: new ol.style.Fill({
+            color: '#ff0000'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 2
+          })
+	})
+    // TODO add pin icon
+
+});
+
+dummyFire1.setStyle(fireIcon);
+dummyFire2.setStyle(fireIcon);
+dummyFire3.setStyle(fireIcon);
+
+var dummyFeatures = new ol.layer.Vector({
+    id: 'dummy-vals',
+    map: map,
+    source: new ol.source.Vector({
+        features: [dummyFire1, dummyFire2, dummyFire3]
+    })
 });
 
 // END dummy data 
@@ -235,16 +263,19 @@ new ol.layer.Vector({
     })
 });
 function searchCoord(latitude,longitude){
-    var p = ol.proj.transform([latitude,longitude], 'EPSG:4326', 'EPSG:3857');
+    var p =lonLatToCoord(longitude,latitude);
     searchedFeature.setGeometry(new ol.geom.Point(p));
 }
 $("#coord-search").click(function(){
     var latitude = parseFloat(document.getElementById("lat-search").value);
     var longitude = parseFloat(document.getElementById("lon-search").value);  
 
-    searchCoord(longitude, latitude);
+    searchCoord(latitude,longitude);
 });
-
+function lonLatToCoord(latitude,longitude){
+    // Returns a coordinate in EPGS:3857 point from given lat lon
+    return ol.proj.transform([latitude,longitude], 'EPSG:4326', 'EPSG:3857');
+}
 </script>
 </body>
 </html>
