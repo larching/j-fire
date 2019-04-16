@@ -1,0 +1,184 @@
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+  
+      #fireMarker1 {
+        width: 20px;
+        height: 20px;
+        border: 1px solid rgb(255, 2, 2);
+        border-radius: 10px;
+        background-color: rgb(255, 0, 0);
+        opacity: 0.5;
+      }
+      #fireMarker2 {
+        width: 20px;
+        height: 20px;
+        border: 1px solid rgb(255, 2, 2);
+        border-radius: 10px;
+        background-color: rgb(255, 0, 0);
+        opacity: 0.5;
+      }
+      #fireMarker3 {
+        width: 20px;
+        height: 20px;
+        border: 1px solid rgb(255, 2, 2);
+        border-radius: 10px;
+        background-color: rgb(255, 0, 0);
+        opacity: 0.5;
+      }
+      #fire {
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        font-size: 11pt;
+        font-weight: bold;
+        text-shadow: black 0.1em 0.1em 0.2em;
+      }
+      .popover-content {
+        min-width: 250px;
+      }
+
+      .container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+      /* Hide the browser's default checkbox */
+      .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+      
+      /* Create a custom checkbox */
+      .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+      }
+      
+      /* On mouse-over, add a grey background color */
+      .container:hover input ~ .checkmark {
+        background-color: #ccc;
+      }
+      
+      /* When the checkbox is checked, add a blue background */
+      .container input:checked ~ .checkmark {
+        background-color: #2196F3;
+      }
+      
+      /* Create the checkmark/indicator (hidden when not checked) */
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+      
+      /* Show the checkmark when checked */
+      .container input:checked ~ .checkmark:after {
+        display: block;
+      }
+      
+      /* Style the checkmark/indicator */
+      .container .checkmark:after {
+        left: 90%;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+
+.overlay .rightbar {
+  background-color: rgba(1, 0, 0, 0.5);
+  float: right;
+  width: 25%;
+}
+.overlay .leftbar {
+  background-color: rgba(0, 0, 1, 0.5);
+  width: 25%;
+  float: left;
+}
+
+.box{
+  background-color: black;
+  opacity: .5;
+  left:95%;
+  top:80%;
+  width: 100px;
+  height: 200px;
+  color:white;
+}
+
+
+ /* Popup container */
+ .popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+} 
+
+
+/*# sourceMappingURL=/bigFire.9ad09f98.css.map */

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css">
+      <link rel="stylesheet" href="/bigFire.9ad09f98.css">
+
+        <!-- Openlayers Stylesheet -->
+  <link rel="stylesheet" href="https://unpkg.com/openlayers/dist/ol.css"> 
+      <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+      <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+      <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <meta charset="utf-8">
+    <title>Big Fire</title>
+
+  <script src="/bigFire.9ad09f98.js"></script><link rel="stylesheet" href="/bigFire.e31bb0bc.css"></head>
+
+  <body>
+
+    <!--map -->
+    <div id="map" class="map">
+ <!--geolocation checkbox and latlong search -->
+        <div class="row"> 
+            <div id="leftbar" class="leftbar col-sm-4">         
+                <div id="info" style="display: none;"></div>
+                <label for="track">
+                  track position
+                  <input id="track" type="checkbox">
+                </label>
+                <p>
+                    position accuracy : <code id="accuracy"></code>&nbsp;&nbsp;
+                  </p>
+
+                  
+              <div class="lat-lon-search">
+                <div> <b>Latitude:</b> <input type="text" id="lat-search"> 
+                  <b>Longitude:</b> <input type="text" id="lon-search">
+                  <button id="coord-search" type="button">Find</button>
+                </div>
+              </div>
+
+    <div style="display: none;">
+      <!-- Clickable label for fire1 -->
+      <!--a class="overlay" id="fire" target="_blank" href="http://localhost:1234/fire1.html">fire1</a-->
+      <div id="fireMarker1" title="Marker1"></div>
+      <div id="fireMarker2" title="Marker2"></div> 
+      <div id="fireMarker3" title="Marker3"></div>
+      <!-- Popup -->
+      <div id="popup" title="Weather for Location"></div>
+    </div>
+
+
+    <script src="/bigFire.e31bb0bc.js"></script>
+
+
+
+
+  </div></div></div></body>
+</html>
