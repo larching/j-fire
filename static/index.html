@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="index.css">
   <!-- Openlayers Stylesheet -->
   <link rel="stylesheet" href="https://unpkg.com/openlayers/dist/ol.css"> 
-  <link rel="stylesheet" href="../ol-geocoder.min.css">
+  <link rel="stylesheet" href="../ol-geocoder/dist/ol-geocoder.min.css">
   <!-- Bootstrap Stylesheet -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
@@ -44,7 +44,8 @@
     </script>
     <script src="https://unpkg.com/openlayers@4.4.2"></script>
     <!-- Local scripts -->
-    <script src="../ol-geocoder.js"></script>
+    <script src="../ol-geocoder/dist/ol-geocoder.js"></script>
+    <script src="../ol-featurepopups/lib/FeaturePopups.js"></script>
     <!-- JQuery events and methods -->
 <script>
 $(document).ready(function(){
@@ -160,15 +161,18 @@ var geolocFeature = new ol.layer.Vector({
 */
 
 var dummyFire1 = new ol.Feature({
-	geometry: new ol.geom.Point(lonLatToCoord( -113.5877542, 47.5303717))
+	geometry: new ol.geom.Point(lonLatToCoord( -113.5877542, 47.5303717)),
+    discoverdate: "2019-4-18"
 });
 
 var dummyFire2 = new ol.Feature({
-	geometry: new ol.geom.Point(lonLatToCoord(-114.4462061, 47.1568185))
+	geometry: new ol.geom.Point(lonLatToCoord(-114.4462061, 47.1568185)),
+    discoverdate: "2019-4-15"
 });
 
 var dummyFire3 = new ol.Feature({
-	geometry: new ol.geom.Point(lonLatToCoord(-113.688856 ,47.001118))
+	geometry: new ol.geom.Point(lonLatToCoord(-113.688856 ,47.001118)),
+    discoverdate: "2019-4-18"
 });
 
 
@@ -260,18 +264,27 @@ $("#coord-search").click(function(){
     searchCoord(latitude,longitude);
 });
 
-var displayFeatureInfo = function(pixel){
-    var features = [];
-    map.forEachFeatureAtPixel(pixel, function(feature, layer){
-        features.push(feature);
-    });
-     
-};
+// Create the select feature controller
+var selector = new OpenLayers.Control.FeaturePopups({
+    selectOptions: {
+        clickout: true
+    }
+});
+selector.addLayer(dummyFeatures, {
+    // Single click
+    templates: {single: "<div style='font-size:.8em'>Discover date: ${.discoverdate}</div>"},
+    // hover over feature
+    hoverTemplate: "Hello World"
+});
+
+map.addControl(selector);
+
 
 function lonLatToCoord(latitude,longitude){
     // Returns a coordinate in EPGS:3857 point from given lat lon
     return ol.proj.transform([latitude,longitude], 'EPSG:4326', 'EPSG:3857');
 }
+
 </script>
 </body>
 </html>
