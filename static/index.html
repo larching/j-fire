@@ -22,6 +22,10 @@
     </div>
     <div class="col-sm-4">
             <div id="map" class="map"></div>
+	    <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content"></div>
+    </div>
             <button id="leftbar-toggle">E</button>
             <button id="rightbar-toggle">E</button> 
     </div>
@@ -45,8 +49,7 @@
     <script src="https://unpkg.com/openlayers@4.4.2"></script>
     <!-- Local scripts -->
     <script src="../ol-geocoder/dist/ol-geocoder.js"></script>
-    <script src="../ol-featurepopups/lib/FeaturePopups.js"></script>
-    <!-- JQuery events and methods -->
+     <!-- JQuery events and methods -->
 <script>
 $(document).ready(function(){
     $("#leftbar-toggle").click(function() {
@@ -263,21 +266,6 @@ $("#coord-search").click(function(){
 
     searchCoord(latitude,longitude);
 });
-
-// Create the select feature controller
-var selector = new OpenLayers.Control.FeaturePopups({
-    selectOptions: {
-        clickout: true
-    }
-});
-selector.addLayer(dummyFeatures, {
-    // Single click
-    templates: {single: "<div style='font-size:.8em'>Discover date: ${.discoverdate}</div>"},
-    // hover over feature
-    hoverTemplate: "Hello World"
-});
-
-map.addControl(selector);
 
 
 function lonLatToCoord(latitude,longitude){

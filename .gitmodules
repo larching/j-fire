@@ -1,0 +1,3 @@
+[submodule "ol-geocoder"]
+	path = ol-geocoder
+	url = https://github.com/papermachine/ol-geocoder.git
